@@ -1,6 +1,7 @@
 export namespace model {
 	
 	export class Player {
+	    ID?: number;
 	    Name: string;
 	
 	    static createFrom(source: any = {}) {
@@ -9,6 +10,7 @@ export namespace model {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.ID = source["ID"];
 	        this.Name = source["Name"];
 	    }
 	}

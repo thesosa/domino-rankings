@@ -18,6 +18,9 @@ func main() {
 	playerService := &service.PlayerService{}
 	matchService := &service.MatchService{}
 
+	// Init database
+	InitDB()
+
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "domino-stats",

@@ -2,7 +2,7 @@ package model
 
 // A Domino player
 type Player struct {
-	// the player's name
+	ID   *int64
 	Name string
 }
 
