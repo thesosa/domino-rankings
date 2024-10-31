@@ -6,6 +6,7 @@ import { routes } from './app.routes';
   imports: [
     RouterModule.forRoot(routes, {
       enableTracing: isDevMode(),
+      useHash: true,
     }),
   ],
   exports: [RouterModule],
