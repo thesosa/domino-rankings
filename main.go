@@ -7,6 +7,7 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
 )
 
 //go:embed all:frontend/dist
@@ -35,6 +36,14 @@ func main() {
 			app,
 			playerService,
 			matchService,
+		},
+		Mac: &mac.Options{
+			About: &mac.AboutInfo{
+				Title: "Domino Rankings",
+				Message: `Aplicación para llevar conteo, datos, y clasificatorias de partidas de Dominó.
+
+				© 2024 David Sosa david.sosa@peopleware.com`,
+			},
 		},
 	})
 
