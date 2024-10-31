@@ -1,4 +1,3 @@
-<a routerLink="/player-ranks">Clasificaciones</a>
 <h2 class="title is-2 mb-2">Partidas</h2>
 <table class="table is-striped is-bordered is-fullwidth">
   <thead>
@@ -35,7 +34,7 @@
           type="button"
           (click)="showConfirmationDialog(match)"
         >
-          Eliminar
+          <fa-icon icon="trash-alt"></fa-icon>
         </button>
       </td>
     </tr>
@@ -56,13 +55,17 @@
     aria-label="Agregar partida"
     routerLink="/matches/new"
   >
-    +
+    <fa-icon icon="plus"></fa-icon>
   </button>
 </div>
 <dialog [open]="openConfirmationDialog">
   <p>Are you sure you want to delete match {{ matchToDelete?.MatchDate }}</p>
   <div class="is-flex">
-    <button type="button" class="button is-danger">Delete</button>
-    <button type="button" class="button">Cancel</button>
+    <button type="button" class="button is-danger" (click)="confirmDelete()">
+      Delete
+    </button>
+    <button type="button" class="button" (click)="cancelDelete()">
+      Cancel
+    </button>
   </div>
 </dialog>

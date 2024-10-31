@@ -22,6 +22,10 @@ body {
     url("../public/fonts/nunito-v16-latin-regular.woff2") format("woff2");
 }
 
+fa-icon + * {
+  margin-left: 0.25rem;
+}
+
 #app {
   height: 100vh;
   text-align: center;

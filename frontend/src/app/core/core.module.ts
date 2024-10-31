@@ -3,7 +3,9 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
+import { fontAwesomeIcons } from './icons/font-awesome-icons';
 
 @NgModule({
   imports: [
@@ -14,4 +16,8 @@ import { ToastrModule } from 'ngx-toastr';
   declarations: [],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })
-export class CoreModule {}
+export class CoreModule {
+  constructor(iconLibrary: FaIconLibrary) {
+    iconLibrary.addIcons(...fontAwesomeIcons);
+  }
+}
