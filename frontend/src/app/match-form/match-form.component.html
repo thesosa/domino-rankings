@@ -1,0 +1,122 @@
+<form novalidate autocomplete="off" [formGroup]="matchForm" (submit)="save()">
+  <div class="container">
+    <h2 class="title is-2 has-text-centered mt-1">Nueva partida</h2>
+
+    <!-- Date -->
+    <div class="field mb-2">
+      <label class="label" for="matchDate"> Fecha </label>
+      <div class="control">
+        <input
+          id="matchDate"
+          type="date"
+          class="input"
+          formControlName="matchDate"
+        />
+      </div>
+    </div>
+
+    <!-- Teams -->
+    <div class="columns">
+      <!-- Team A -->
+      <div class="column">
+        <fieldset class="card">
+          <div class="card-header">
+            <legend class="card-header-title title is-4">Equipo A</legend>
+          </div>
+          <div class="card-content">
+            <div class="field">
+              <label class="label">Jugador 1</label>
+              <div class="control">
+                <app-autocomplete
+                  [items]="players"
+                  formControlName="player1"
+                ></app-autocomplete>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Jugador 2</label>
+              <div class="control">
+                <app-autocomplete
+                  [items]="players"
+                  formControlName="player2"
+                ></app-autocomplete>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Puntos</label>
+              <div class="control">
+                <input
+                  type="number"
+                  class="input"
+                  required
+                  formControlName="teamAPoints"
+                />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Team B -->
+      <div class="column">
+        <fieldset class="card">
+          <div class="card-header">
+            <legend class="title card-header-title is-4">Equipo B</legend>
+          </div>
+          <div class="card-content">
+            <div class="field">
+              <label class="label">Jugador 1</label>
+              <div class="control">
+                <app-autocomplete
+                  [items]="players"
+                  formControlName="player3"
+                ></app-autocomplete>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Jugador 2</label>
+              <div class="control">
+                <app-autocomplete
+                  [items]="players"
+                  formControlName="player4"
+                ></app-autocomplete>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Puntos</label>
+              <div class="control">
+                <input
+                  type="number"
+                  class="input"
+                  required
+                  formControlName="teamBPoints"
+                />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <button
+          type="submit"
+          class="button is-primary"
+          tabindex="0"
+          [disabled]="matchForm.invalid"
+        >
+          Guardar
+        </button>
+      </div>
+      <div class="control">
+        <button type="button" class="button" tabindex="0" (click)="cancel()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

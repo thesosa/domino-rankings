@@ -1,0 +1,20 @@
+<div class="autocomplete">
+  <input
+    type="text"
+    class="input"
+    [(value)]="value"
+    (input)="onInput($event)"
+    (keydown)="onKeyDown($event)"
+    (focus)="onTouched()"
+    [disabled]="isDisabled"
+  />
+  <ul class="autocomplete-items">
+    <li
+      *ngFor="let item of itemsToShow; index as i"
+      [className]="currentFocus === i ? 'active' : ''"
+      (click)="onItemSelect(item)"
+    >
+      <strong>{{ item }}</strong>
+    </li>
+  </ul>
+</div>

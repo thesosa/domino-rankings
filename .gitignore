@@ -1,0 +1,10 @@
+build/bin
+node_modules
+frontend/dist
+frontend/.angular/cache/
+
+# macOS files
+.DS_Store
+
+# database files
+*.db
