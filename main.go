@@ -3,6 +3,7 @@ package main
 import (
 	"domino-ranks/service"
 	"embed"
+	"log"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -21,6 +22,7 @@ func main() {
 
 	// Init database
 	InitDB()
+	log.Println("Initialized DB. Running wails.")
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -48,6 +50,6 @@ func main() {
 	})
 
 	if err != nil {
-		println("Error:", err.Error())
+		log.Fatalf("Error: %v", err)
 	}
 }
