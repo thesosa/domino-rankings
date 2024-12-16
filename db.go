@@ -3,6 +3,9 @@ package main
 import (
 	"database/sql"
 	"log"
+
+	_ "github.com/ncruces/go-sqlite3/driver"
+	_ "github.com/ncruces/go-sqlite3/embed"
 )
 
 const createPlayerTableQuery = "CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL)"
