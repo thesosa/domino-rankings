@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { MatchFormComponent } from './match-form/match-form.component';
 import { SharedModule } from './shared/shared.module';
 import { MatchListComponent } from './match-list/match-list.component';
+import { RankingsComponent } from './rankings/rankings.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { MatchListComponent } from './match-list/match-list.component';
     AppComponent,
     MatchFormComponent,
     MatchListComponent,
+    RankingsComponent,
     AutocompleteComponent,
   ],
   providers: [],
