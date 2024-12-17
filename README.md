@@ -17,3 +17,10 @@ to this in your browser, and you can call your Go code from devtools.
 ## Building
 
 To build a redistributable, production mode package, use `wails build`.
+
+## TODO
+
+- [x] Sort the match list by date desc
+- [x] Filter matches by player name
+- [ ] Filter matches by date range
+- [ ] Rankings

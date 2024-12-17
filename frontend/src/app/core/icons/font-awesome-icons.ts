@@ -2,6 +2,7 @@ import {
   faArrowLeft,
   faPlus,
   faSave,
+  faSearch,
   faTimes,
   faTrashAlt,
   IconDefinition,
@@ -11,6 +12,7 @@ export const fontAwesomeIcons: IconDefinition[] = [
   faArrowLeft,
   faPlus,
   faSave,
+  faSearch,
   faTimes,
   faTrashAlt,
 ];

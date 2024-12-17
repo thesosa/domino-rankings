@@ -1,5 +1,20 @@
 <h2 class="title is-2 mb-2">Partidas</h2>
 <a routerLink="rankings">Go to rankings</a>
+<!-- Filters -->
+<div class="field my-4">
+  <p class="control has-icons-left">
+    <input
+      type="text"
+      class="input"
+      placeholder="Buscar por jugador"
+      (keyup)="filterByPlayerName($event)"
+    />
+    <span class="icon is-left">
+      <fa-icon icon="search"></fa-icon>
+    </span>
+  </p>
+</div>
+<!-- Table -->
 <table class="table is-striped is-bordered is-fullwidth">
   <thead>
     <tr>
@@ -20,7 +35,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (match of matches; track match.ID) {
+    @for (match of matchesToShow; track match.ID) {
     <tr class="has-text-centered">
       <td>{{ match.MatchDate | date }}</td>
       <td>{{ match.TeamA.Player1.Name }}</td>

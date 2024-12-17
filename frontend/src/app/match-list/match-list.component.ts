@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MatchListComponent implements OnInit {
   matches: model.Match[] = [];
+  matchesToShow: model.Match[] = [];
   matchToDelete?: model.Match;
   openConfirmationDialog = false;
 
@@ -19,10 +20,26 @@ export class MatchListComponent implements OnInit {
 
   ngOnInit(): void {
     LoadMatches()
-      .then((result) => (this.matches = result))
+      .then((result) => {
+        this.matches = result;
+        this.matchesToShow = [...result];
+      })
       .catch(() => {
         this.toastr.error('Ocurrió un error cargando la lista de partidas.');
       });
+  }
+
+  filterByPlayerName($event: KeyboardEvent): void {
+    const searchQuery = ($event.target as HTMLInputElement).value;
+    this.matchesToShow = this.matches.filter((match) => {
+      const playerNames = [
+        match.TeamA.Player1.Name,
+        match.TeamA.Player2.Name,
+        match.TeamB.Player1.Name,
+        match.TeamB.Player2.Name,
+      ];
+      return playerNames.some((player) => player.includes(searchQuery));
+    });
   }
 
   showConfirmationDialog(item: model.Match): void {
