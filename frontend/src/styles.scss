@@ -25,6 +25,10 @@ fa-icon + * {
   text-align: center;
 }
 
+button[disabled] {
+  cursor: not-allowed;
+}
+
 /* Invalid input fields and select dropdowns */
 .ng-dirty.ng-invalid > .autocomplete input,
 input.ng-dirty.ng-invalid:focus,
