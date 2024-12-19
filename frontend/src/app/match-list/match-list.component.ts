@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { model } from '../../../wailsjs/go/models';
 import {
   DeleteMatch,
@@ -9,12 +9,14 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-match-list',
   templateUrl: 'match-list.component.html',
+  styleUrls: ['match-list.component.scss'],
 })
 export class MatchListComponent implements OnInit {
   matches: model.Match[] = [];
   matchesToShow: model.Match[] = [];
   matchToDelete?: model.Match;
-  openConfirmationDialog = false;
+  @ViewChild('deleteConfirmationDialog')
+  confirmationDialog!: ElementRef<HTMLDialogElement>;
 
   constructor(private toastr: ToastrService) {}
 
@@ -23,6 +25,8 @@ export class MatchListComponent implements OnInit {
       .then((result) => {
         this.matches = result;
         this.matchesToShow = [...result];
+        this.matchToDelete = this.matches[0];
+        this.confirmationDialog.nativeElement.showModal();
       })
       .catch(() => {
         this.toastr.error('Ocurrió un error cargando la lista de partidas.');
@@ -44,14 +48,14 @@ export class MatchListComponent implements OnInit {
 
   showConfirmationDialog(item: model.Match): void {
     this.matchToDelete = item;
-    this.openConfirmationDialog = true;
+    this.confirmationDialog.nativeElement.showModal();
   }
 
   confirmDelete(): void {
     DeleteMatch(this.matchToDelete!.ID!)
       .then(() => {
         this.toastr.success('Partida eliminada.');
-        this.openConfirmationDialog = false;
+        this.confirmationDialog.nativeElement.close();
         delete this.matchToDelete;
         LoadMatches()
           .then((result) => (this.matches = result))
@@ -67,7 +71,7 @@ export class MatchListComponent implements OnInit {
   }
 
   cancelDelete(): void {
-    this.openConfirmationDialog = false;
+    this.confirmationDialog.nativeElement.close();
     delete this.matchToDelete;
   }
 }

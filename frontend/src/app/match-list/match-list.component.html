@@ -74,14 +74,45 @@
     <fa-icon icon="plus"></fa-icon>
   </button>
 </div>
-<dialog [open]="openConfirmationDialog">
-  <p>Are you sure you want to delete match {{ matchToDelete?.MatchDate }}</p>
-  <div class="is-flex">
-    <button type="button" class="button is-danger" (click)="confirmDelete()">
-      Delete
-    </button>
-    <button type="button" class="button" (click)="cancelDelete()">
-      Cancel
-    </button>
+<dialog #deleteConfirmationDialog>
+  <div class="modal-content p-2">
+    <div class="is-flex is-justify-content-space-between mb-2">
+      <p class="title is-5 is-align-self-center">
+        ¿Está seguro que desea borrar esta partida?
+      </p>
+      <button
+        class="button ml-4 is-small"
+        aria-label="close"
+        (click)="cancelDelete()"
+      >
+        <fa-icon icon="times"></fa-icon>
+      </button>
+    </div>
+    <p class="has-text-centered">
+      {{ matchToDelete?.MatchDate | date : "fullDate" }}
+    </p>
+    <div class="is-flex is-justify-content-space-evenly">
+      <div>
+        <div>{{ matchToDelete?.TeamA?.Player1?.Name }}</div>
+        <div>{{ matchToDelete?.TeamA?.Player2?.Name }}</div>
+        <div>{{ matchToDelete?.TeamAPoints }}</div>
+      </div>
+      <p class="is-align-self-center has-text-weight-semibold is-uppercase">
+        vs
+      </p>
+      <div>
+        <div>{{ matchToDelete?.TeamB?.Player1?.Name }}</div>
+        <div>{{ matchToDelete?.TeamB?.Player2?.Name }}</div>
+        <div>{{ matchToDelete?.TeamBPoints }}</div>
+      </div>
+    </div>
+    <div class="is-flex is-justify-content-center dialog-buttons mt-3">
+      <button type="button" class="button is-danger" (click)="confirmDelete()">
+        Eliminar
+      </button>
+      <button type="button" class="button" (click)="cancelDelete()">
+        Cancelar
+      </button>
+    </div>
   </div>
 </dialog>
