@@ -1,5 +1,37 @@
-<div>Rankings component works!</div>
 <button type="button" class="button" (click)="back()">
   <fa-icon icon="arrow-left"></fa-icon>
   <span>Regresar</span>
 </button>
+
+<table class="table is-striped is-fullwidth">
+  <thead>
+    <tr>
+      <th>Jugador</th>
+      <th>Partidas</th>
+      <th>Victorias</th>
+      <th>Derrotas</th>
+      <th>PG</th>
+      <th>PP</th>
+      <th>EFEC</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (ranking of rankings; track ranking.player.ID) {
+    <tr>
+      <td>{{ ranking.player.Name }}</td>
+      <td>{{ ranking.totalMatches }}</td>
+      <td>{{ ranking.victories }}</td>
+      <td>{{ ranking.totalMatches - ranking.victories }}</td>
+      <td>{{ ranking.pointsEarned }}</td>
+      <td>{{ ranking.pointsLost }}</td>
+      <td>
+        {{
+          (100 * ranking.victories) / (ranking.totalMatches || 1)
+            | number : "1.2-2"
+        }}
+        %
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
