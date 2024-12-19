@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { model } from '../../../wailsjs/go/models';
 import {
   DeleteMatch,
   LoadMatches,
 } from '../../../wailsjs/go/service/MatchService';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-match-list',
@@ -25,8 +25,6 @@ export class MatchListComponent implements OnInit {
       .then((result) => {
         this.matches = result;
         this.matchesToShow = [...result];
-        this.matchToDelete = this.matches[0];
-        this.confirmationDialog.nativeElement.showModal();
       })
       .catch(() => {
         this.toastr.error('Ocurrió un error cargando la lista de partidas.');
