@@ -82,6 +82,7 @@
         ¿Está seguro que desea borrar esta partida?
       </p>
       <button
+        type="button"
         class="button ml-4 is-small"
         aria-label="close"
         (click)="cancelDelete()"
@@ -108,7 +109,12 @@
       </div>
     </div>
     <div class="is-flex is-justify-content-center dialog-buttons mt-3">
-      <button type="button" class="button is-danger" (click)="confirmDelete()">
+      <button
+        type="button"
+        class="button is-danger"
+        (click)="confirmDelete()"
+        autofocus
+      >
         Eliminar
       </button>
       <button type="button" class="button" (click)="cancelDelete()">

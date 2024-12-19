@@ -54,6 +54,10 @@ export class MatchListComponent implements OnInit {
       .then(() => {
         this.toastr.success('Partida eliminada.');
         this.confirmationDialog.nativeElement.close();
+        const index = this.matchesToShow.findIndex(
+          (match) => this.matchToDelete?.ID === match.ID
+        );
+        this.matchesToShow.splice(index, 1);
         delete this.matchToDelete;
         LoadMatches()
           .then((result) => (this.matches = result))
