@@ -1,3 +1,4 @@
+<h1 class="title is-1 my-2">Clasificaciones</h1>
 <button type="button" class="button" (click)="back()">
   <fa-icon icon="arrow-left"></fa-icon>
   <span>Regresar</span>
@@ -12,6 +13,7 @@
       <th>Derrotas</th>
       <th>PG</th>
       <th>PP</th>
+      <th>DIFF</th>
       <th>EFEC</th>
     </tr>
   </thead>
@@ -24,6 +26,7 @@
       <td>{{ ranking.totalMatches - ranking.victories }}</td>
       <td>{{ ranking.pointsEarned }}</td>
       <td>{{ ranking.pointsLost }}</td>
+      <td>{{ ranking.pointsEarned - ranking.pointsLost }}</td>
       <td>
         {{
           (100 * ranking.victories) / (ranking.totalMatches || 1)

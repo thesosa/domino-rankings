@@ -97,12 +97,12 @@ export class RankingsComponent implements OnInit {
 
     // sort rankings
     this.rankings.sort((a, b) => {
-      const matchesDiff = b.totalMatches - a.totalMatches;
-      if (matchesDiff === 0) {
-        const victoriesDiff = b.victories - a.victories;
-        return victoriesDiff;
+      const victoriesDiff = b.victories - a.victories;
+      if (victoriesDiff === 0) {
+        const matchesDiff = b.totalMatches - a.totalMatches;
+        return matchesDiff;
       }
-      return matchesDiff;
+      return victoriesDiff;
     });
   }
 
