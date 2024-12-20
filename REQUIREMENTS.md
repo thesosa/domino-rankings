@@ -90,3 +90,6 @@ Then, a couple of buttons, one to confirm, and one to cancel.
 ### Rankings screen
 
 Show a list of all players with all the data from the matches of a selected season.
+Seasons must have a minimum number of matches for a player to be ranked by effectiveness.
+Players with more matches than the minimum matches for ranking must be at the top of the list.
+Those top players must be sorted by effectiveness.
