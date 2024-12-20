@@ -1,4 +1,5 @@
 <h1 class="title is-1 my-2">Clasificaciones</h1>
+<p class="subtitle mb-2">Lista de las clasificaciones de los jugadores.</p>
 <button type="button" class="button" (click)="back()">
   <fa-icon icon="arrow-left"></fa-icon>
   <span>Regresar</span>
@@ -8,24 +9,30 @@
   <thead>
     <tr>
       <th>Jugador</th>
-      <th>Partidas</th>
-      <th>Victorias</th>
-      <th>Derrotas</th>
-      <th><abbr title="Puntos ganados">PG</abbr></th>
-      <th><abbr title="Puntos perdidos">PP</abbr></th>
-      <th><abbr title="Diferencia">DIF</abbr></th>
-      <th><abbr title="Efectividad">EFEC</abbr></th>
+      <th>Nombre</th>
+      <th><abbr title="Partidas jugadas">PJ</abbr></th>
+      <th><abbr title="Partidas ganadas">PG</abbr></th>
+      <th class="has-text-danger"><abbr title="Partidas perdidas">PP</abbr></th>
+      <th><abbr title="Puntos ganados">PTOS. G</abbr></th>
+      <th class="has-text-danger">
+        <abbr title="Puntos perdidos">PTOS. P</abbr>
+      </th>
+      <th><abbr title="Diferencia">DIF.</abbr></th>
+      <th><abbr title="Efectividad">EFECT.</abbr></th>
     </tr>
   </thead>
   <tbody>
-    @for (ranking of rankings; track ranking.player.ID) {
+    @for (ranking of rankings; track ranking.player.ID; let idx = $index) {
     <tr>
+      <td>{{ idx + 1 }}</td>
       <td>{{ ranking.player.Name }}</td>
       <td>{{ ranking.totalMatches }}</td>
       <td>{{ ranking.victories }}</td>
-      <td>{{ ranking.totalMatches - ranking.victories }}</td>
+      <td class="has-text-danger">
+        {{ ranking.totalMatches - ranking.victories }}
+      </td>
       <td>{{ ranking.pointsEarned }}</td>
-      <td>{{ ranking.pointsLost }}</td>
+      <td class="has-text-danger">{{ ranking.pointsLost }}</td>
       <td>{{ ranking.pointsEarned - ranking.pointsLost }}</td>
       <td>
         {{
