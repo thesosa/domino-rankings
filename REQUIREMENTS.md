@@ -47,6 +47,10 @@ Matches have the following data fields:
 | `teamA_score` | number | The amount of points team A (player 1 and player 2) scored. |
 | `teamB_score` | number | The amount of points team B (player 3 and player 4) scored. |
 
+## Data export
+
+For the two major screens with data shown in a table (matches and rankings) there must be a button to export the data in CSV format.
+
 ## Screens
 
 The starting screen for the application will be the [Match List screen](#match-list-screen), where a list of matches for a season will be shown. The list of screens and its navigation map must be as follows:
