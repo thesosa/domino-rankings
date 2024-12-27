@@ -29,6 +29,22 @@ button[disabled] {
   cursor: not-allowed;
 }
 
+.gap-1 {
+  gap: 0.25rem !important;
+}
+
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+.gap-3 {
+  gap: 0.75rem !important;
+}
+
+.gap-4 {
+  gap: 1rem !important;
+}
+
 /* Invalid input fields and select dropdowns */
 .ng-dirty.ng-invalid > .autocomplete input,
 input.ng-dirty.ng-invalid:focus,
