@@ -1,9 +1,29 @@
 <h1 class="title is-1 my-2">Clasificaciones</h1>
 <p class="subtitle mb-2">Lista de las clasificaciones de los jugadores.</p>
-<button type="button" class="button" (click)="back()">
-  <fa-icon icon="arrow-left"></fa-icon>
-  <span>Regresar</span>
-</button>
+
+<div class="is-flex is-justify-content-space-between">
+  <button type="button" class="button" (click)="back()">
+    <fa-icon icon="arrow-left"></fa-icon>
+    <span>Regresar</span>
+  </button>
+  <div class="is-flex gap-1">
+    <button
+      type="button"
+      class="button is-success is-outlined"
+      (click)="exportCSV()"
+    >
+      <fa-icon icon="file-csv"></fa-icon>
+    </button>
+    <!-- TODO add this button when feature becomes available -->
+    <!-- <button
+      type="button"
+      class="button is-danger is-outlined"
+      (click)="exportPDF()"
+    >
+      <fa-icon icon="file-pdf"></fa-icon>
+    </button> -->
+  </div>
+</div>
 
 <table class="table is-striped is-fullwidth">
   <thead>

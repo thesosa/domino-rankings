@@ -19,6 +19,10 @@ func main() {
 	app := NewApp()
 	playerService := &service.PlayerService{}
 	matchService := &service.MatchService{}
+	rankingService := &service.RankingService{
+		PlayerService: playerService,
+		MatchService:  matchService,
+	}
 
 	// Init database
 	InitDB()
@@ -38,6 +42,7 @@ func main() {
 			app,
 			playerService,
 			matchService,
+			rankingService,
 		},
 		Mac: &mac.Options{
 			About: &mac.AboutInfo{

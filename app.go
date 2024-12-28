@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -24,4 +26,9 @@ func (a *App) startup(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+func (a *App) SaveFileDialogCSV() (fileName string, err error) {
+	options := runtime.SaveDialogOptions{DefaultFilename: `domino-data.csv`, Title: `Elija donde guardar el archivo`}
+	return runtime.SaveFileDialog(a.ctx, options)
 }
