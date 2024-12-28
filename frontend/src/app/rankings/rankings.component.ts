@@ -95,6 +95,11 @@ export class RankingsComponent implements OnInit {
       const victoriesDiff = b.victories - a.victories;
       if (victoriesDiff === 0) {
         const matchesDiff = b.totalMatches - a.totalMatches;
+        if (matchesDiff === 0) {
+          return (
+            b.pointsEarned - b.pointsLost - (a.pointsEarned - a.pointsLost)
+          );
+        }
         return matchesDiff;
       }
       return victoriesDiff;

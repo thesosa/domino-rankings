@@ -102,7 +102,11 @@ func (rService *RankingService) SaveRankingsCSV(fileName string) error {
 	compareRankings := func(a *model.PlayerRanking, b *model.PlayerRanking) int {
 		victoriesDiff := int(b.Victories) - int(a.Victories)
 		if victoriesDiff == 0 {
-			return int(b.TotalMatches) - int(a.TotalMatches)
+			matchesDiff := int(b.TotalMatches) - int(a.TotalMatches)
+			if matchesDiff == 0 {
+				return (int(b.PointsEarned) - int(b.PointsLost)) - (int(a.PointsEarned) - int(a.PointsLost))
+			}
+			return matchesDiff
 		}
 		return int(victoriesDiff)
 	}
