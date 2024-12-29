@@ -9,3 +9,7 @@ dialog {
 .dialog-buttons {
   gap: 1rem;
 }
+
+thead tr th:last-child {
+  vertical-align: middle;
+}

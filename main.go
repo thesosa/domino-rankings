@@ -25,6 +25,7 @@ func main() {
 	}
 
 	// Init database
+	log.Println()
 	service.InitDB()
 	log.Println("Initialized DB. Running wails.")
 

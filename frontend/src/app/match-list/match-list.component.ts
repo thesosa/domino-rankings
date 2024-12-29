@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { model } from '../../../wailsjs/go/models';
 import {
+  DeleteAllMatches,
   DeleteMatch,
   LoadMatches,
 } from '../../../wailsjs/go/service/MatchService';
@@ -17,6 +18,8 @@ export class MatchListComponent implements OnInit {
   matchToDelete?: model.Match;
   @ViewChild('deleteConfirmationDialog')
   confirmationDialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild('confirmNukeDialog')
+  confirmNukeDialog!: ElementRef<HTMLDialogElement>;
 
   constructor(private toastr: ToastrService) {}
 
@@ -75,5 +78,26 @@ export class MatchListComponent implements OnInit {
   cancelDelete(): void {
     this.confirmationDialog.nativeElement.close();
     delete this.matchToDelete;
+  }
+
+  showConfirmNukeDialog(): void {
+    this.confirmNukeDialog.nativeElement.showModal();
+  }
+
+  async nukeData(): Promise<void> {
+    try {
+      await DeleteAllMatches();
+      this.matches = [];
+      this.matchesToShow = [];
+    } catch (error) {
+      console.error(error);
+      this.toastr.error('Ocurrió un error tratando de eliminar la data.');
+    } finally {
+      this.confirmNukeDialog.nativeElement.close();
+    }
+  }
+
+  cancelNuke(): void {
+    this.confirmNukeDialog.nativeElement.close();
   }
 }

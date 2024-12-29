@@ -1,5 +1,6 @@
 import {
   faArrowLeft,
+  faBomb,
   faFileCsv,
   faFilePdf,
   faPlus,
@@ -12,6 +13,7 @@ import {
 
 export const fontAwesomeIcons: IconDefinition[] = [
   faArrowLeft,
+  faBomb,
   faFileCsv,
   faFilePdf,
   faPlus,

@@ -9,6 +9,7 @@ import (
 const saveMatchQuery = "INSERT INTO match (match_date, player1, player2, player3, player4, teamAPoints, teamBPoints) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *"
 const selectMatchesQuery = "SELECT id, match_date, player1, player2, player3, player4, teamAPoints, teamBPoints FROM match ORDER BY match_date DESC"
 const deleteMatchQuery = "DELETE FROM match WHERE id = $1"
+const deleteAllMatchesQuery = "DELETE FROM match"
 
 type MatchService struct{}
 
@@ -63,6 +64,19 @@ func (s *MatchService) DeleteMatch(id int64) {
 	}
 	defer db.Close()
 	_, err = db.Exec(deleteMatchQuery, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (s *MatchService) DeleteAllMatches() {
+	log.Println("Deleting all matches.")
+	db, err := sql.Open("sqlite3", GetDBPath())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	_, err = db.Exec(deleteAllMatchesQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
