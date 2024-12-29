@@ -25,12 +25,12 @@ func main() {
 	}
 
 	// Init database
-	InitDB()
+	service.InitDB()
 	log.Println("Initialized DB. Running wails.")
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "domino-stats",
+		Title:  "Domino Rankings",
 		Width:  1200,
 		Height: 840,
 		AssetServer: &assetserver.Options{
@@ -49,7 +49,7 @@ func main() {
 				Title: "Domino Rankings",
 				Message: `Aplicación para llevar conteo, datos, y clasificatorias de partidas de Dominó.
 
-				© 2024 David Sosa david.sosa@peopleware.com`,
+				© 2025 David Sosa david.sosa@peopleware.com`,
 			},
 		},
 	})

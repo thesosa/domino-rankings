@@ -13,7 +13,7 @@ const deleteMatchQuery = "DELETE FROM match WHERE id = $1"
 type MatchService struct{}
 
 func (s *MatchService) SaveMatch(match *model.Match) *model.Match {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", GetDBPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func (s *MatchService) SaveMatch(match *model.Match) *model.Match {
 }
 
 func (s *MatchService) LoadMatches() []*model.Match {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", GetDBPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,8 +56,8 @@ func (s *MatchService) LoadMatches() []*model.Match {
 }
 
 func (s *MatchService) DeleteMatch(id int64) {
-	log.Printf("deleting match %d\n", id)
-	db, err := sql.Open("sqlite3", "./test.db")
+	log.Printf("Deleting match %d\n", id)
+	db, err := sql.Open("sqlite3", GetDBPath())
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -9,7 +9,7 @@ import (
 type PlayerService struct{}
 
 func (service *PlayerService) LoadPlayers() []*model.Player {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", GetDBPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,12 +29,13 @@ func (service *PlayerService) LoadPlayers() []*model.Player {
 }
 
 func (service *PlayerService) SavePlayer(name string) *model.Player {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", GetDBPath())
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
+	log.Printf("Saving player %s\n", name)
 	stmt, err := db.Prepare("INSERT INTO player (name) VALUES ($1) RETURNING *")
 	if err != nil {
 		log.Fatal(err)
