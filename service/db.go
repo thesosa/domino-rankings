@@ -34,7 +34,12 @@ func InitDB() {
 			if err != nil {
 				log.Fatalln(err)
 			}
-			SetDBPath(userCacheDir + "/domino-ranks/domino-data.db")
+			dbDir := userCacheDir + "\\domino-ranks"
+			err = os.Mkdir(dbDir, os.ModeDir)
+			if err != nil && !os.IsExist(err) {
+				log.Fatalln(err)
+			}
+			SetDBPath(dbDir + "\\domino-data.db")
 		}
 	}
 	db, err := sql.Open("sqlite3", GetDBPath())
