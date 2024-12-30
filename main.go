@@ -17,20 +17,25 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
-	playerService := &service.PlayerService{}
-	matchService := &service.MatchService{}
+
+	// Init database
+	log.Println()
+	dbPath := service.DBPath()
+	db, err := service.InitDB(dbPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	playerService := service.NewPlayerService(db)
+	matchService := service.NewMatchService(db)
 	rankingService := &service.RankingService{
 		PlayerService: playerService,
 		MatchService:  matchService,
 	}
-
-	// Init database
-	log.Println()
-	service.InitDB()
 	log.Println("Initialized DB. Running wails.")
+	defer db.Close()
 
 	// Create application with options
-	err := wails.Run(&options.App{
+	err = wails.Run(&options.App{
 		Title:  "Domino Rankings",
 		Width:  1200,
 		Height: 840,

@@ -6,16 +6,22 @@ import (
 	"log"
 )
 
-type PlayerService struct{}
+const (
+	loadPlayersQuery = "SELECT id, name FROM player ORDER BY name ASC"
+	savePlayerQuery  = "INSERT INTO player (name) VALUES ($1) RETURNING *"
+)
 
-func (service *PlayerService) LoadPlayers() []*model.Player {
-	db, err := sql.Open("sqlite3", GetDBPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+type PlayerService struct {
+	db *sql.DB
+}
+
+func NewPlayerService(db *sql.DB) *PlayerService {
+	return &PlayerService{db: db}
+}
+
+func (s *PlayerService) LoadPlayers() []*model.Player {
 	players := make([]*model.Player, 0)
-	rows, err := db.Query("SELECT id, name FROM player ORDER BY name ASC")
+	rows, err := s.db.Query(loadPlayersQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,15 +34,9 @@ func (service *PlayerService) LoadPlayers() []*model.Player {
 	return players
 }
 
-func (service *PlayerService) SavePlayer(name string) *model.Player {
-	db, err := sql.Open("sqlite3", GetDBPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
+func (s *PlayerService) SavePlayer(name string) *model.Player {
 	log.Printf("Saving player %s\n", name)
-	stmt, err := db.Prepare("INSERT INTO player (name) VALUES ($1) RETURNING *")
+	stmt, err := s.db.Prepare(savePlayerQuery)
 	if err != nil {
 		log.Fatal(err)
 	}

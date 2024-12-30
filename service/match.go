@@ -11,20 +11,21 @@ const selectMatchesQuery = "SELECT id, match_date, player1, player2, player3, pl
 const deleteMatchQuery = "DELETE FROM match WHERE id = $1"
 const deleteAllMatchesQuery = "DELETE FROM match"
 
-type MatchService struct{}
+type MatchService struct {
+	db *sql.DB
+}
+
+func NewMatchService(db *sql.DB) *MatchService {
+	return &MatchService{db: db}
+}
 
 func (s *MatchService) SaveMatch(match *model.Match) *model.Match {
-	db, err := sql.Open("sqlite3", GetDBPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	row := db.QueryRow(saveMatchQuery, match.MatchDate, match.TeamA.Player1.Name, match.TeamA.Player2.Name, match.TeamB.Player1.Name, match.TeamB.Player2.Name, match.TeamAPoints, match.TeamBPoints)
+	log.Println("Saving new match.")
+	row := s.db.QueryRow(saveMatchQuery, match.MatchDate, match.TeamA.Player1.Name, match.TeamA.Player2.Name, match.TeamB.Player1.Name, match.TeamB.Player2.Name, match.TeamAPoints, match.TeamBPoints)
 	result := new(model.Match)
 	result.TeamA = model.Team{}
 	result.TeamB = model.Team{}
-	err = row.Scan(&result.ID, &result.MatchDate, &result.TeamA.Player1.Name, &result.TeamA.Player2.Name, &result.TeamB.Player1.Name, &match.TeamB.Player2.Name, &match.TeamAPoints, &match.TeamBPoints)
+	err := row.Scan(&result.ID, &result.MatchDate, &result.TeamA.Player1.Name, &result.TeamA.Player2.Name, &result.TeamB.Player1.Name, &match.TeamB.Player2.Name, &match.TeamAPoints, &match.TeamBPoints)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,14 +33,9 @@ func (s *MatchService) SaveMatch(match *model.Match) *model.Match {
 }
 
 func (s *MatchService) LoadMatches() []*model.Match {
-	db, err := sql.Open("sqlite3", GetDBPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
+	log.Println("Loading matches.")
 	matches := make([]*model.Match, 0)
-	rows, err := db.Query(selectMatchesQuery)
+	rows, err := s.db.Query(selectMatchesQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,12 +54,7 @@ func (s *MatchService) LoadMatches() []*model.Match {
 
 func (s *MatchService) DeleteMatch(id int64) {
 	log.Printf("Deleting match %d\n", id)
-	db, err := sql.Open("sqlite3", GetDBPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-	_, err = db.Exec(deleteMatchQuery, id)
+	_, err := s.db.Exec(deleteMatchQuery, id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -71,12 +62,7 @@ func (s *MatchService) DeleteMatch(id int64) {
 
 func (s *MatchService) DeleteAllMatches() {
 	log.Println("Deleting all matches.")
-	db, err := sql.Open("sqlite3", GetDBPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-	_, err = db.Exec(deleteAllMatchesQuery)
+	_, err := s.db.Exec(deleteAllMatchesQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
