@@ -1,16 +1,11 @@
 package service
 
 import (
-	"database/sql"
 	"fmt"
 	"testing"
 )
 
 func TestNewPlayerService(t *testing.T) {
-	db, err := sql.Open("sqlite3", "../test.db?cache=shared")
-	if err != nil {
-		t.Fatalf("could not connect to database: %s", err)
-	}
 	playerService := NewPlayerService(db)
 	if playerService.db != db {
 		t.Fail()

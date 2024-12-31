@@ -25,7 +25,7 @@ func (s *MatchService) SaveMatch(match *model.Match) *model.Match {
 	result := new(model.Match)
 	result.TeamA = model.Team{}
 	result.TeamB = model.Team{}
-	err := row.Scan(&result.ID, &result.MatchDate, &result.TeamA.Player1.Name, &result.TeamA.Player2.Name, &result.TeamB.Player1.Name, &match.TeamB.Player2.Name, &match.TeamAPoints, &match.TeamBPoints)
+	err := row.Scan(&result.ID, &result.MatchDate, &result.TeamA.Player1.Name, &result.TeamA.Player2.Name, &result.TeamB.Player1.Name, &result.TeamB.Player2.Name, &result.TeamAPoints, &result.TeamBPoints)
 	if err != nil {
 		log.Fatal(err)
 	}
