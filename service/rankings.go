@@ -13,6 +13,7 @@ type RankingService struct {
 	MatchService  *MatchService
 }
 
+// Save all rankings into a CSV file.
 func (rService *RankingService) SaveRankingsCSV(fileName string) error {
 	// create file
 	file, err := os.Create(fileName)
@@ -99,19 +100,29 @@ func (rService *RankingService) SaveRankingsCSV(fileName string) error {
 		}
 	}
 	// sort rankings
-	compareRankings := func(a *model.PlayerRanking, b *model.PlayerRanking) int {
-		victoriesDiff := int(b.Victories) - int(a.Victories)
-		if victoriesDiff == 0 {
-			matchesDiff := int(b.TotalMatches) - int(a.TotalMatches)
-			if matchesDiff == 0 {
-				return (int(b.PointsEarned) - int(b.PointsLost)) - (int(a.PointsEarned) - int(a.PointsLost))
-			}
-			return matchesDiff
-		}
-		return int(victoriesDiff)
-	}
 	slices.SortFunc(rankings, compareRankings)
 	// make csv records
+	records := csvRecords(rankings)
+	// write rankings to file
+	return csvWriter.WriteAll(records)
+}
+
+// Compare function for sorting rankings.
+// Rankings are sorted by victories first, then by number of matches, and finally by points difference
+func compareRankings(a *model.PlayerRanking, b *model.PlayerRanking) int {
+	victoriesDiff := int(b.Victories) - int(a.Victories)
+	if victoriesDiff == 0 {
+		matchesDiff := int(b.TotalMatches) - int(a.TotalMatches)
+		if matchesDiff == 0 {
+			return (int(b.PointsEarned) - int(b.PointsLost)) - (int(a.PointsEarned) - int(a.PointsLost))
+		}
+		return matchesDiff
+	}
+	return int(victoriesDiff)
+}
+
+// Map player rankings to CSV records
+func csvRecords(rankings []*model.PlayerRanking) [][]string {
 	records := [][]string{
 		{"Jugador", "Nombre", "PJ", "PG", "PP", "PTOS. G", "PTOS. P", "DIF.", "EFECT."},
 	}
@@ -127,6 +138,5 @@ func (rService *RankingService) SaveRankingsCSV(fileName string) error {
 		row := []string{strconv.FormatInt(int64(i+1), 10), ranking.Player.Name, strconv.FormatInt(ranking.TotalMatches, 10), strconv.FormatInt(ranking.Victories, 10), strconv.FormatInt(losses, 10), strconv.FormatInt(ranking.PointsEarned, 10), strconv.FormatInt(ranking.PointsLost, 10), strconv.FormatInt(pointsDiff, 10), strconv.FormatInt(effectiveness, 10)}
 		records = append(records, row)
 	}
-	// write rankings to file
-	return csvWriter.WriteAll(records)
+	return records
 }
