@@ -14,7 +14,7 @@ func TestNewPlayerService(t *testing.T) {
 
 func TestLoadPlayers(t *testing.T) {
 	t.Cleanup(func() {
-		db.Exec("DELETE FROM players")
+		db.Exec("DELETE FROM player")
 	})
 	// setup
 	for id := 1; id <= 10; id++ {
@@ -47,7 +47,7 @@ func TestLoadPlayers(t *testing.T) {
 
 func TestSavePlayers(t *testing.T) {
 	t.Cleanup(func() {
-		db.Exec("DELETE FROM players")
+		db.Exec("DELETE FROM player")
 	})
 	var countQuery = "SELECT count(*) FROM player"
 	rowCount := db.QueryRow(countQuery)

@@ -27,10 +27,7 @@ func main() {
 	}
 	playerService := service.NewPlayerService(db)
 	matchService := service.NewMatchService(db)
-	rankingService := &service.RankingService{
-		PlayerService: playerService,
-		MatchService:  matchService,
-	}
+	rankingService := service.NewRankingService(playerService, matchService)
 	log.Println("Initialized DB. Running wails.")
 	defer db.Close()
 

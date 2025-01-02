@@ -13,10 +13,10 @@ import (
 const createPlayerTableQuery = "CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL)"
 const createMatchTableQuery = "CREATE TABLE IF NOT EXISTS match (id INTEGER PRIMARY KEY, match_date DATE NOT NULL, player1 TEXT NOT NULL, player2 TEXT NOT NULL, player3 TEXT NOT NULL, player4 TEXT NOT NULL, teamAPoints INTEGER NOT NULL, teamBPoints INTEGER NOT NULL)"
 
-// The database handle
+// The database handle.
 var db *sql.DB
 
-// The path to the db file
+// The path to the db file.
 func DBPath() string {
 	if runtime.GOOS != "windows" {
 		return "./domino-data.db"

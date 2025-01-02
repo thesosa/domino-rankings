@@ -1,0 +1,7 @@
+match_date,player1,player2,player3,player4,teamA_points,teamB_points
+2001-01-09T14:02:00.000Z,Mario,Luigi,Peach,Daisy,180,200
+2001-01-08T14:02:00.000Z,Peach,Daisy,Wario,Waluigi,200,132
+2001-01-10T14:02:00.000Z,Mario,Luigi,Wario,Waluigi,200,120
+2001-01-07T14:02:00.000Z,Wario,Waluigi,Peach,Daisy,200,116
+2001-01-06T14:02:00.000Z,Mario,Luigi,Peach,Daisy,96,200
+2001-01-05T14:02:00.000Z,Mario,Luigi,Wario,Waluigi,200,110

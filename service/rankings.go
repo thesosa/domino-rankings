@@ -9,26 +9,21 @@ import (
 )
 
 type RankingService struct {
-	PlayerService *PlayerService
-	MatchService  *MatchService
+	playerService *PlayerService
+	matchService  *MatchService
 }
 
-// Save all rankings into a CSV file.
-func (rService *RankingService) SaveRankingsCSV(fileName string) error {
-	// create file
-	file, err := os.Create(fileName)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	csvWriter := csv.NewWriter(file)
-	defer csvWriter.Flush()
+func NewRankingService(playerService *PlayerService, matchService *MatchService) *RankingService {
+	return &RankingService{playerService: playerService, matchService: matchService}
+}
+
+// Load all player's rankings.
+func (rService *RankingService) LoadRankings() (rankings []*model.PlayerRanking) {
 	// load players
-	players := rService.PlayerService.LoadPlayers()
+	players := rService.playerService.LoadPlayers()
 	// load matches data
-	matches := rService.MatchService.LoadMatches()
-	// build player rankings
-	rankings := make([]*model.PlayerRanking, len(players))
+	matches := rService.matchService.LoadMatches()
+	rankings = make([]*model.PlayerRanking, len(players))
 	for i, player := range players {
 		rankings[i] = &model.PlayerRanking{
 			Player:       player,
@@ -99,16 +94,31 @@ func (rService *RankingService) SaveRankingsCSV(fileName string) error {
 			playerB2Ranking.PointsLost += match.TeamAPoints
 		}
 	}
+	return rankings
+}
+
+// Save all rankings into a CSV file.
+func (rService *RankingService) SaveRankingsCSV(fileName string) error {
+	// create file
+	file, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	csvWriter := csv.NewWriter(file)
+	defer csvWriter.Flush()
+	// load player rankings
+	rankings := rService.LoadRankings()
 	// sort rankings
 	slices.SortFunc(rankings, compareRankings)
 	// make csv records
-	records := csvRecords(rankings)
+	records := mapRankingsToCSVRecords(rankings)
 	// write rankings to file
 	return csvWriter.WriteAll(records)
 }
 
 // Compare function for sorting rankings.
-// Rankings are sorted by victories first, then by number of matches, and finally by points difference
+// Rankings are sorted by victories first, then by number of matches, and finally by points difference.
 func compareRankings(a *model.PlayerRanking, b *model.PlayerRanking) int {
 	victoriesDiff := int(b.Victories) - int(a.Victories)
 	if victoriesDiff == 0 {
@@ -121,21 +131,21 @@ func compareRankings(a *model.PlayerRanking, b *model.PlayerRanking) int {
 	return int(victoriesDiff)
 }
 
-// Map player rankings to CSV records
-func csvRecords(rankings []*model.PlayerRanking) [][]string {
+// Map player rankings to CSV records.
+func mapRankingsToCSVRecords(rankings []*model.PlayerRanking) [][]string {
 	records := [][]string{
 		{"Jugador", "Nombre", "PJ", "PG", "PP", "PTOS. G", "PTOS. P", "DIF.", "EFECT."},
 	}
 	for i, ranking := range rankings {
 		losses := ranking.TotalMatches - ranking.Victories
 		pointsDiff := ranking.PointsEarned - ranking.PointsLost
-		var effectiveness int64
+		var effectiveness float64
 		if ranking.TotalMatches == 0 {
 			effectiveness = 0
 		} else {
-			effectiveness = ranking.Victories / ranking.TotalMatches
+			effectiveness = float64(ranking.Victories) / float64(ranking.TotalMatches)
 		}
-		row := []string{strconv.FormatInt(int64(i+1), 10), ranking.Player.Name, strconv.FormatInt(ranking.TotalMatches, 10), strconv.FormatInt(ranking.Victories, 10), strconv.FormatInt(losses, 10), strconv.FormatInt(ranking.PointsEarned, 10), strconv.FormatInt(ranking.PointsLost, 10), strconv.FormatInt(pointsDiff, 10), strconv.FormatInt(effectiveness, 10)}
+		row := []string{strconv.FormatInt(int64(i+1), 10), ranking.Player.Name, strconv.FormatInt(ranking.TotalMatches, 10), strconv.FormatInt(ranking.Victories, 10), strconv.FormatInt(losses, 10), strconv.FormatInt(ranking.PointsEarned, 10), strconv.FormatInt(ranking.PointsLost, 10), strconv.FormatInt(pointsDiff, 10), strconv.FormatFloat(effectiveness, 'f', 2, 64)}
 		records = append(records, row)
 	}
 	return records

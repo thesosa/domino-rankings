@@ -19,25 +19,19 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) (code int, err error) {
-	// pseudo-code, some implementation excluded:
-	//
-	// 1. create test.db if it does not exist
-	// 2. run our DDL statements to create the required tables if they do not exist
-	// 3. run our tests
-	// 4. truncate the test db tables
-
 	db, err = sql.Open("sqlite3", "file:../test.db?cache=shared")
 	if err != nil {
 		return -1, fmt.Errorf("could not connect to database: %w", err)
 	}
+	defer db.Close()
 
 	// truncates all test data after the tests are run
-	defer func() {
+	var truncateData = func() {
 		for _, t := range []string{"player", "match"} {
 			_, _ = db.Exec(fmt.Sprintf("DELETE FROM %s", t))
 		}
-		db.Close()
-	}()
+	}
+	defer truncateData()
 
 	err = createPlayerTable(db)
 	if err != nil {
@@ -47,6 +41,8 @@ func run(m *testing.M) (code int, err error) {
 	if err != nil {
 		return -1, fmt.Errorf("could not create match table: %w", err)
 	}
+	// make sure we start with clean tables
+	truncateData()
 
 	return m.Run(), nil
 }
