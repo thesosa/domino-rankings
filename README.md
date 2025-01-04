@@ -23,4 +23,4 @@ To build a redistributable, production mode package, use `wails build`.
 - [x] Sort the match list by date desc
 - [x] Filter matches by player name
 - [ ] Filter matches by date range
-- [ ] Rankings
+- [x] Rankings
