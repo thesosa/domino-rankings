@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { model } from '../../../wailsjs/go/models';
@@ -25,7 +31,7 @@ export class MatchFormComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.matchForm = this.fb.group({
       matchDate: [
         new Date().toISOString().split('T')[0],
@@ -44,33 +50,59 @@ export class MatchFormComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(200)],
       ],
     });
-    LoadPlayers()
-      .then((result) => (this.players = result.map((player) => player.Name)))
-      .catch(() =>
-        this.toastr.warning('Ocurrió un error cargando la lista de jugadores.')
+    const noDuplicatePlayers = (
+      form: AbstractControl
+    ): ValidationErrors | null => {
+      const player1: string = form.get('player1')!.value;
+      const player2: string = form.get('player2')!.value;
+      const player3: string = form.get('player3')!.value;
+      const player4: string = form.get('player4')!.value;
+      const playerNames = [player1, player2, player3, player4].filter(
+        (name) => name.trim().length > 0
       );
+      const hasDuplicates = new Set(playerNames).size !== playerNames.length;
+      if (hasDuplicates) {
+        return { duplicatePlayers: true };
+      }
+      return null;
+    };
+    this.matchForm.addValidators(noDuplicatePlayers);
+    try {
+      const players = await LoadPlayers();
+      this.players = players.map((player) => player.Name);
+    } catch (error) {
+      this.toastr.warning('Ocurrió un error cargando la lista de jugadores.');
+    }
   }
 
   cancel(): void {
     this.router.navigate(['']);
   }
 
-  save(): void {
+  async save(): Promise<void> {
+    if (this.matchForm.invalid) {
+      return;
+    }
+    const matchDate: Date = new Date(this.matchForm.get('matchDate')!.value);
     const player1: string = this.matchForm.get('player1')!.value;
     const player2: string = this.matchForm.get('player2')!.value;
     const player3: string = this.matchForm.get('player3')!.value;
     const player4: string = this.matchForm.get('player4')!.value;
-    const playerNames = [player1, player2, player3, player4];
-    const hasDuplicates = new Set(playerNames).size !== playerNames.length;
-    if (hasDuplicates) {
-      this.toastr.error('La partida no debe tener jugadores duplicados.');
-      return;
-    }
     const teamAPoints: number = this.matchForm.get('teamAPoints')!.value;
     const teamBPoints: number = this.matchForm.get('teamBPoints')!.value;
-    const matchDate: Date = new Date(this.matchForm.get('matchDate')!.value);
+    // make sure at least one team has 200 points
+    if (teamAPoints !== 200 && teamBPoints !== 200) {
+      this.toastr.warning('El equipo ganador debe tener 200 puntos.');
+      return;
+    }
+    // make sure ONLY ONE team has 200 points
+    if (teamAPoints === teamBPoints) {
+      this.toastr.warning('Sólo puede haber un equipo ganador.');
+      return;
+    }
 
     // save new players
+    const playerNames = [player1, player2, player3, player4];
     const newPlayers = playerNames.filter((p) => !this.players.includes(p!));
     newPlayers.forEach((player) => SavePlayer(player!));
 
@@ -92,12 +124,11 @@ export class MatchFormComponent implements OnInit {
       TeamBPoints: teamBPoints,
     });
 
-    SaveMatch(match)
-      .then(() => {
-        this.router.navigate(['']);
-      })
-      .catch(() => {
-        this.toastr.error('Ocurrió un error al intentar guardar la partida.');
-      });
+    try {
+      await SaveMatch(match);
+      this.router.navigate(['']);
+    } catch (error) {
+      this.toastr.error('Ocurrió un error al intentar guardar la partida.');
+    }
   }
 }

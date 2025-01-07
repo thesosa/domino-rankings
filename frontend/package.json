@@ -2,11 +2,14 @@
   "name": "domino-ranks",
   "version": "0.0.0",
   "scripts": {
+    "build": "ng build",
+    "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config jest.conf.js",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test --coverage --log-heap-usage -w=2",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "jest --coverage",
+    "watch": "ng build --watch --configuration development"
   },
   "private": true,
   "dependencies": {
@@ -27,16 +30,13 @@
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
+    "@angular-builders/jest": "^18.0.0",
     "@angular-devkit/build-angular": "^18.2.9",
     "@angular/cli": "^18.2.9",
     "@angular/compiler-cli": "^18.2.0",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.2.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.4.2",
     "typescript": "~5.5.2"
   }
 }

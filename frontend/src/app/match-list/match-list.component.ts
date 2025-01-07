@@ -90,7 +90,6 @@ export class MatchListComponent implements OnInit {
       this.matches = [];
       this.matchesToShow = [];
     } catch (error) {
-      console.error(error);
       this.toastr.error('Ocurrió un error tratando de eliminar la data.');
     } finally {
       this.confirmNukeDialog.nativeElement.close();

@@ -99,6 +99,11 @@
         </fieldset>
       </div>
     </div>
+    @if (matchForm.dirty && matchForm.hasError('duplicatePlayers')) {
+    <p class="has-text-danger is-size-6">
+      No pueden haber jugadores duplicados.
+    </p>
+    }
     <div class="field is-grouped">
       <div class="control">
         <button

@@ -3,6 +3,7 @@ node_modules
 frontend/dist
 frontend/.angular/cache/
 frontend/wailsjs/
+frontend/coverage/
 
 # macOS files
 .DS_Store

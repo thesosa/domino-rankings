@@ -115,7 +115,7 @@ export class RankingsComponent implements OnInit {
     SaveRankingsCSV(fileName);
   }
 
-  exportPDF(): void {
+  exportScreenshot(): void {
     // TODO implement this method
     this.toastr.warning('Funcionalidad no disponible en esta versión.');
   }
