@@ -43,7 +43,7 @@ export class MatchListComponent implements OnInit {
         match.TeamB.Player1.Name,
         match.TeamB.Player2.Name,
       ];
-      return playerNames.some((player) => player.includes(searchQuery));
+      return playerNames.some((playerName) => playerName.includes(searchQuery));
     });
   }
 
@@ -52,27 +52,24 @@ export class MatchListComponent implements OnInit {
     this.confirmationDialog.nativeElement.showModal();
   }
 
-  confirmDelete(): void {
-    DeleteMatch(this.matchToDelete!.ID!)
-      .then(() => {
-        this.toastr.success('Partida eliminada.');
-        this.confirmationDialog.nativeElement.close();
-        const index = this.matchesToShow.findIndex(
-          (match) => this.matchToDelete?.ID === match.ID
-        );
-        this.matchesToShow.splice(index, 1);
-        delete this.matchToDelete;
-        LoadMatches()
-          .then((result) => (this.matches = result))
-          .catch(() => {
-            this.toastr.error(
-              'Ocurrió un error cargando la lista de partidas.'
-            );
-          });
-      })
-      .catch(() => {
-        this.toastr.error('Ocurrió un error eliminado la partida.');
-      });
+  async confirmDelete(): Promise<void> {
+    try {
+      await DeleteMatch(this.matchToDelete!.ID!);
+      this.toastr.success('Partida eliminada.');
+      this.confirmationDialog.nativeElement.close();
+      const index = this.matchesToShow.findIndex(
+        (match) => this.matchToDelete?.ID === match.ID
+      );
+      this.matchesToShow.splice(index, 1);
+      delete this.matchToDelete;
+      try {
+        this.matches = await LoadMatches();
+      } catch {
+        this.toastr.error('Ocurrió un error cargando la lista de partidas.');
+      }
+    } catch {
+      this.toastr.error('Ocurrió un error eliminado la partida.');
+    }
   }
 
   cancelDelete(): void {
@@ -84,16 +81,16 @@ export class MatchListComponent implements OnInit {
     this.confirmNukeDialog.nativeElement.showModal();
   }
 
-  async nukeData(): Promise<void> {
-    try {
-      await DeleteAllMatches();
-      this.matches = [];
-      this.matchesToShow = [];
-    } catch (error) {
-      this.toastr.error('Ocurrió un error tratando de eliminar la data.');
-    } finally {
-      this.confirmNukeDialog.nativeElement.close();
-    }
+  nukeData(): void {
+    DeleteAllMatches()
+      .then(() => {
+        this.matches = [];
+        this.matchesToShow = [];
+      })
+      .catch(() => {
+        this.toastr.error('Ocurrió un error tratando de eliminar la data.');
+      });
+    this.confirmNukeDialog.nativeElement.close();
   }
 
   cancelNuke(): void {

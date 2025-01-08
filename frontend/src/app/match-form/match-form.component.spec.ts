@@ -19,7 +19,7 @@ describe('MatchFormComponent', () => {
   let fixture: ComponentFixture<MatchFormComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [AutocompleteComponent, MatchFormComponent],
       imports: [FontAwesomeModule, ReactiveFormsModule, ToastrModule.forRoot()],
     }).compileComponents();

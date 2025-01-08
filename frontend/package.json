@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "ng build",
-    "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config jest.conf.js",
+    "jest": "jest --coverage --logHeapUsage --maxWorkers=2 --config jest.config.ts",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --coverage --log-heap-usage -w=2",
