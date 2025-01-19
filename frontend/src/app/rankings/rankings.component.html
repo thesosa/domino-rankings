@@ -53,7 +53,7 @@
     @for (ranking of rankings; track ranking.player.ID; let idx = $index) {
     <tr
       [ngClass]="
-        ranking.totalMatches >= qualifyingThreshold ? 'is-selected' : ''
+        ranking.totalMatches >= qualifyingThreshold ? 'accented' : ''
       "
     >
       <td>{{ idx + 1 }}</td>

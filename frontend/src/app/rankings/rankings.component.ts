@@ -13,6 +13,7 @@ import { PlayerRanking } from './player-ranking.model';
 @Component({
   selector: 'app-rankings',
   templateUrl: 'rankings.component.html',
+  styleUrls: ['rankings.component.scss']
 })
 export class RankingsComponent implements OnInit {
   matches: model.Match[] = [];
