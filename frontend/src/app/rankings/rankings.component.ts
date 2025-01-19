@@ -15,6 +15,10 @@ export class RankingsComponent implements OnInit {
   matches: model.Match[] = [];
   players: model.Player[] = [];
   rankings: PlayerRanking[] = [];
+  /**
+   * How many matches a player has to play to qualify for tournaments
+   */
+  qualifyingThreshold = 50;
 
   constructor(private toastr: ToastrService) {}
 
@@ -90,8 +94,40 @@ export class RankingsComponent implements OnInit {
       }
     });
 
-    // sort rankings
-    this.rankings.sort((a, b) => {
+    this.sortRankings();
+  }
+
+  sortRankings(): void {
+    // split rankings into players with >=qualifyingThreshold matches and players with <qualifyingThreshold matches
+    const notQualifying: PlayerRanking[] = [];
+    const qualifying: PlayerRanking[] = [];
+    for (const ranking of this.rankings) {
+      if (ranking.totalMatches < this.qualifyingThreshold) {
+        notQualifying.push(ranking);
+      } else {
+        qualifying.push(ranking);
+      }
+    }
+
+    // sort qualifying players by effectiveness, then by matches, then by points
+    qualifying.sort((a, b) => {
+      const aEff = a.victories / a.totalMatches;
+      const bEff = b.victories / b.totalMatches;
+      const effDiff = bEff - aEff;
+      if (effDiff === 0) {
+        const matchesDiff = b.totalMatches - a.totalMatches;
+        if (matchesDiff === 0) {
+          const aNetPoints = a.pointsEarned - a.pointsLost;
+          const bNetPoints = b.pointsEarned - b.pointsLost;
+          return bNetPoints - aNetPoints;
+        }
+        return matchesDiff;
+      }
+      return effDiff;
+    });
+
+    // sort the rest of the players by victories, then matches, then points
+    notQualifying.sort((a, b) => {
       const victoriesDiff = b.victories - a.victories;
       if (victoriesDiff === 0) {
         const matchesDiff = b.totalMatches - a.totalMatches;
@@ -104,6 +140,9 @@ export class RankingsComponent implements OnInit {
       }
       return victoriesDiff;
     });
+
+    //
+    this.rankings = [...qualifying, ...notQualifying];
   }
 
   async exportCSV(): Promise<void> {
@@ -113,11 +152,6 @@ export class RankingsComponent implements OnInit {
       return;
     }
     SaveRankingsCSV(fileName);
-  }
-
-  exportScreenshot(): void {
-    // TODO implement this method
-    this.toastr.warning('Funcionalidad no disponible en esta versión.');
   }
 
   back(): void {

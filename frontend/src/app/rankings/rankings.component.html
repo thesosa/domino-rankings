@@ -7,6 +7,21 @@
     <span>Regresar</span>
   </button>
   <div class="is-flex gap-1">
+    <div class="field" style="width: 6rem">
+      <div class="control has-icons-left">
+        <input
+          type="number"
+          class="input"
+          title="Cantidad mínima de partidas para calificar"
+          [(ngModel)]="qualifyingThreshold"
+          (ngModelChange)="sortRankings()"
+          min="1"
+        />
+        <span class="icon is-small is-left">
+          <fa-icon icon="ranking-star"></fa-icon>
+        </span>
+      </div>
+    </div>
     <button
       type="button"
       class="button is-success is-outlined"
@@ -14,14 +29,6 @@
     >
       <fa-icon icon="file-csv"></fa-icon>
     </button>
-    <!-- TODO add this button when feature becomes available -->
-    <!-- <button
-      type="button"
-      class="button is-danger is-outlined"
-      (click)="exportPDF()"
-    >
-      <fa-icon icon="file-pdf"></fa-icon>
-    </button> -->
   </div>
 </div>
 
@@ -43,7 +50,11 @@
   </thead>
   <tbody>
     @for (ranking of rankings; track ranking.player.ID; let idx = $index) {
-    <tr>
+    <tr
+      [ngClass]="
+        ranking.totalMatches >= qualifyingThreshold ? 'is-selected' : ''
+      "
+    >
       <td>{{ idx + 1 }}</td>
       <td>{{ ranking.player.Name }}</td>
       <td>{{ ranking.totalMatches }}</td>
