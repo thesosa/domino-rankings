@@ -3,7 +3,10 @@ import { ToastrService } from 'ngx-toastr';
 import { SaveFileDialogCSV } from '../../../wailsjs/go/main/App';
 import { model } from '../../../wailsjs/go/models';
 import { LoadMatches } from '../../../wailsjs/go/service/MatchService';
-import { LoadPlayers } from '../../../wailsjs/go/service/PlayerService';
+import {
+  DeletePlayer,
+  LoadPlayers,
+} from '../../../wailsjs/go/service/PlayerService';
 import { SaveRankingsCSV } from '../../../wailsjs/go/service/RankingService';
 import { PlayerRanking } from './player-ranking.model';
 
@@ -152,6 +155,12 @@ export class RankingsComponent implements OnInit {
       return;
     }
     SaveRankingsCSV(fileName);
+  }
+
+  async deletePlayer(ranking: PlayerRanking): Promise<void> {
+    await DeletePlayer(ranking.player.ID!);
+    const index = this.rankings.indexOf(ranking);
+    this.rankings.splice(index, 1);
   }
 
   back(): void {

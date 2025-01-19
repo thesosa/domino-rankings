@@ -46,6 +46,7 @@
       </th>
       <th><abbr title="Diferencia">DIF.</abbr></th>
       <th><abbr title="Efectividad">EFECT.</abbr></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -71,6 +72,20 @@
             | number : "1.2-2"
         }}
         %
+      </td>
+      <td>
+        @if (ranking.totalMatches === 0) {
+        <button
+          type="button"
+          class="button is-danger is-small is-outlined"
+          (click)="deletePlayer(ranking)"
+        >
+          <fa-icon icon="trash-alt"></fa-icon>
+          <span class="sr-only"
+            >Eliminar jugador {{ ranking.player.Name }}</span
+          >
+        </button>
+        }
       </td>
     </tr>
     }

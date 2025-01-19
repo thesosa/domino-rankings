@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	loadPlayersQuery = "SELECT id, name FROM player ORDER BY name ASC"
-	savePlayerQuery  = "INSERT INTO player (name) VALUES ($1) RETURNING *"
+	loadPlayersQuery  = "SELECT id, name FROM player ORDER BY name ASC"
+	savePlayerQuery   = "INSERT INTO player (name) VALUES ($1) RETURNING *"
+	deletePlayerQuery = "DELETE FROM player WHERE id = $1"
 )
 
 type PlayerService struct {
@@ -48,4 +49,12 @@ func (s *PlayerService) SavePlayer(name string) *model.Player {
 		log.Fatal(err)
 	}
 	return player
+}
+
+func (s *PlayerService) DeletePlayer(ID int64) {
+	log.Printf("Delete player with id %d\n", ID)
+	_, err := s.db.Exec(deletePlayerQuery, ID)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
