@@ -1,3 +1,7 @@
 tr.accented {
-    background-color: #fafad2 !important;
+  background-color: #fafad2 !important;
+}
+
+tr.accented > td {
+  color: var(--bulma-text-dark);
 }
